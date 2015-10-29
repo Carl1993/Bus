@@ -1,0 +1,65 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
+        #l-map{height:300px;width:100%;}
+        #r-result {width:100%;}
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=MovUTD0XDPU7vNNqHFsItNYr"></script>
+</head>
+<body>
+    <div id="header" style="width:100%; height:50px; background:blue; color:white; line-height:50px; text-indent:25px;">
+        <div id="options" style="width:90%; float:left;">
+            <table cellspacing="5" style="line-height:40px;">
+            <tr>
+                <td>公交通</td>
+                <td><a href="http://0.0.0.0:3000/home" style="color:white;">公交线路信息</a></td>
+            </tr>
+            </table>
+        </div>
+        <div id="login" style="width:10%; float:right; color:white; line-height:50px;">
+            <table style="line-height:40px;">
+            <tr>
+                 <% if @user==nil %>
+            <%=link_to '注册',:controller=>'users',:action=>'new' %>
+            <%=link_to '登录',:controller=>'home',:action=>'login' %>
+        <% else %>
+            <%=link_to @user[:name] %>
+            <%=link_to '注销', :controller=>'home',:action=>'logout' %>
+        <% end %>
+            </tr>
+            </table>
+        </div>
+    </div>
+    <div id="bus-result" style="width:100%; float:left;">
+        公交名: <input id="busNum" type="text" style="width:30px; margin-right:10px;" onkeydown='if(event.keyCode==13){btn.click()}'"/>路
+        <input id=btn type="button" value="查询" onclick="busSearch()" />
+    </div>
+    <div id="l-map" style="width:50%;float:left"></div>
+    <div id="r-result" style="width:50%; float:right;"></div>
+</body>
+</html>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("l-map");            // 创建Map实例
+    map.centerAndZoom("哈尔滨", 12);
+
+    var busline = new BMap.BusLineSearch(map,{
+        renderOptions:{map:map,panel:"r-result"},
+            onGetBusListComplete: function(result){
+               if(result) {
+                 var fstLine = result.getBusListItem(0);//获取第一个公交列表显示到map上
+                 busline.getBusLine(fstLine);
+               }
+            }
+    });
+    function busSearch(){
+        var busName = document.getElementById("busNum").value;
+        busline.getBusList(busName);
+    }
+    setTimeout(function(){
+        busSearch();
+    },1500);
+</script>

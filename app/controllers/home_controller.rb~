@@ -1,0 +1,13 @@
+class HomeController < ApplicationController
+  def index
+  end
+
+  def login
+  end
+
+  def checklogin
+  end
+
+  def logout
+  end
+end
