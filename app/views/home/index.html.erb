@@ -23,11 +23,13 @@
             <table style="line-height:40px;">
             <tr>
                  <% if @user==nil %>
-            <%=link_to '注册',:controller=>'users',:action=>'new' %>
-            <%=link_to '登录',:controller=>'home',:action=>'login' %>
+               <td><a href="http://0.0.0.0:3000/users/new" style="color:white;"">注册</a></td>
+
+               <td><a href="http://0.0.0.0:3000/home/login" style="color:white;"">登录</a></td>
         <% else %>
-            <%=link_to @user[:name] %>
-            <%=link_to '注销', :controller=>'home',:action=>'logout' %>
+            <td><%=link_to @user[:name] %></td>
+
+            <td><a href="http://0.0.0.0:3000/home/logout" style="color:white;"">  注销</a></td>
         <% end %>
             </tr>
             </table>
